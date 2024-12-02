@@ -5,7 +5,8 @@ import axios from "axios";
 import { backendUrl } from "../App";
 import { toast } from "react-toastify";
 
-function Add({ token }) {
+const Add = ({ token }) => {
+
   const [image1, setImage1] = useState(false);
   const [image2, setImage2] = useState(false);
   const [image3, setImage3] = useState(false);
@@ -16,7 +17,7 @@ function Add({ token }) {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  // const [bestseller, setBestseller] = useState(false);
+  const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
 
   const onSubmitHandler = async (e) => {
@@ -30,7 +31,7 @@ function Add({ token }) {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
-      // formData.append("bestseller", bestseller);
+      formData.append("bestseller", bestseller);
       formData.append("sizes", JSON.stringify(sizes));
 
       image1 && formData.append("image1", image1);
@@ -201,6 +202,7 @@ function Add({ token }) {
               S - 15.6 x 11.7 in
             </p>
           </div>
+
           <div
             onClick={() =>
               setSizes((prev) =>
@@ -209,11 +211,53 @@ function Add({ token }) {
                   : [...prev, "M"]
               )
             }
-          ></div>
+          >
+            <p
+              className={`${
+                sizes.includes("M") ? "bg-pink-100" : "bg-slate-200"
+              } px-3 py-1 cursor-pointer`}
+            >
+              M - 22 x 16.5 in
+            </p>
+          </div>
+
+          <div
+            onClick={() =>
+              setSizes((prev) =>
+                prev.includes("L")
+                  ? prev.filter((item) => item !== "L")
+                  : [...prev, "L"]
+              )
+            }
+          >
+            <p
+              className={`${
+                sizes.includes("L") ? "bg-pink-100" : "bg-slate-200"
+              } px-3 py-1 cursor-pointer`}
+            >
+              L - 31.2 x 23.4 in
+            </p>
+          </div>
         </div>
       </div>
+
+      <div className="flex gap-2 mt-2">
+        <input
+          onChange={() => setBestseller((prev) => !prev)}
+          checked={bestseller}
+          type="checkbox"
+          id="bestseller"
+        />
+        <label className="cursor-pointer" htmlFor="bestseller">
+          Add to bestseller
+        </label>
+      </div>
+
+      <button type="submit" className="w-28 py-3 mt-4 bg-black text-white">
+        ADD
+      </button>
     </form>
   );
-}
+};
 
 export default Add;
